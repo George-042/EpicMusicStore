@@ -9,11 +9,11 @@
 
     <changeSet id="create-track_genre" author="George">
         <createTable tableName="track_genre">
-            <column name="track_id" type="bigint" autoIncrement="true">
+            <column name="track_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="genre_id" type="bigint" autoIncrement="true">
+            <column name="genre_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
         </createTable>

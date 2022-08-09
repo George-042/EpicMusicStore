@@ -9,11 +9,11 @@
 
     <changeSet id="create-playlist_tracks" author="George">
         <createTable tableName="playlist_tracks">
-            <column name="playlist_id" type="bigint" autoIncrement="true">
+            <column name="playlist_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="track_id" type="bigint" autoIncrement="true">
+            <column name="track_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
         </createTable>

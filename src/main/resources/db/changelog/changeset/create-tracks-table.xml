@@ -10,7 +10,7 @@
     <changeSet id="create-tracks" author="George">
         <createTable tableName="tracks">
             <column name="id" type="bigint" autoIncrement="true">
-                <constraints nullable="false"/>
+                <constraints primaryKey="true" primaryKeyName="tracks_pkey"/>
             </column>
 
             <column name="name" type="varchar(100)">
@@ -21,7 +21,7 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="publication_date" type="date">
+            <column name="publication_date" type="timestamp">
                 <constraints nullable="false"/>
             </column>
 
@@ -29,14 +29,12 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="track_picture" type="varchar"/>
+            <column name="track_picture" type="bytea"/>
 
             <column name="file" type="varchar">
                 <constraints nullable="false"/>
             </column>
         </createTable>
-
-        <addPrimaryKey tableName="tracks" columnNames="id" constraintName="tracks_pkey"/>
 
         <addForeignKeyConstraint baseTableName="tracks" baseColumnNames="album_id" constraintName="tracks_album_id_fkey"
                                  referencedTableName="albums" referencedColumnNames="id"/>

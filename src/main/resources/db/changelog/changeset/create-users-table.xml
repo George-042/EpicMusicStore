@@ -10,7 +10,7 @@
     <changeSet id="create-users" author="George">
         <createTable tableName="users">
             <column name="id" type="bigint" autoIncrement="true">
-                <constraints nullable="false"/>
+                <constraints primaryKey="true" primaryKeyName="users_pkey"/>
             </column>
 
             <column name="name" type="varchar(200)">
@@ -33,7 +33,7 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="user_picture" type="varchar"/>
+            <column name="user_picture" type="bytea"/>
 
             <column name="role" type="varchar(10)">
                 <constraints nullable="false"/>
@@ -43,7 +43,5 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-
-        <addPrimaryKey tableName="users" columnNames="id" constraintName="users_pkey"/>
     </changeSet>
 </databaseChangeLog>
