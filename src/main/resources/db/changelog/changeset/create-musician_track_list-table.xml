@@ -7,9 +7,9 @@
         <runningAs username="postgres"/>
     </preConditions>
 
-    <changeSet id="create-user_track_list" author="George">
-        <createTable tableName="user_track_list">
-            <column name="user_id" type="bigint">
+    <changeSet id="create-musician_track_list" author="George">
+        <createTable tableName="musician_track_list">
+            <column name="musician_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
 
@@ -18,12 +18,12 @@
             </column>
         </createTable>
 
-        <addForeignKeyConstraint baseTableName="user_track_list" baseColumnNames="user_id"
-                                 constraintName="user_track_list_user_id_fkey"
+        <addForeignKeyConstraint baseTableName="musician_track_list" baseColumnNames="musician_id"
+                                 constraintName="musician_track_list_user_id_fkey"
                                  referencedTableName="users" referencedColumnNames="id"/>
 
-        <addForeignKeyConstraint baseTableName="user_track_list" baseColumnNames="track_id"
-                                 constraintName="user_track_list_track_id_fkey"
+        <addForeignKeyConstraint baseTableName="musician_track_list" baseColumnNames="track_id"
+                                 constraintName="musician_track_list_track_id_fkey"
                                  referencedTableName="tracks" referencedColumnNames="id"/>
     </changeSet>
 </databaseChangeLog>
