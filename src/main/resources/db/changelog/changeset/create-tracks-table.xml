@@ -31,7 +31,7 @@
 
             <column name="track_picture" type="bytea"/>
 
-            <column name="file" type="varchar">
+            <column name="file" type="bytea">
                 <constraints nullable="false"/>
             </column>
         </createTable>

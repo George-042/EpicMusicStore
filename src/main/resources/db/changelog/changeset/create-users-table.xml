@@ -39,7 +39,7 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="is_confirmed" type="varchar(5)">
+            <column name="is_confirmed" type="boolean">
                 <constraints nullable="false"/>
             </column>
         </createTable>
