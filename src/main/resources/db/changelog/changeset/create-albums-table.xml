@@ -1,0 +1,32 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <preConditions>
+        <runningAs username="postgres"/>
+    </preConditions>
+
+    <changeSet id="create-albums" author="George">
+        <createTable tableName="albums">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" unique="true"/>
+            </column>
+
+            <column name="name" type="varchar(150)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="user_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="user_id_fkey" references="users(id)"/>
+            </column>
+
+            <column name="album_picture" type="varchar"/>
+        </createTable>
+
+        <addPrimaryKey tableName="albums" columnNames="id" constraintName="albums_pkey"/>
+
+        <addForeignKeyConstraint baseTableName="albums" baseColumnNames="user_id" constraintName="albums_user_id_fkey"
+                                 referencedTableName="users" referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>

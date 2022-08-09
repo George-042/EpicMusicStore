@@ -1,0 +1,32 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <preConditions>
+        <runningAs username="postgres"/>
+    </preConditions>
+
+    <changeSet id="create-playlists" author="George">
+        <createTable tableName="playlists">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="playlist_picture" type="varchar"/>
+        </createTable>
+
+        <addPrimaryKey tableName="playlists" columnNames="id" constraintName="playlists_pkey"/>
+
+        <addForeignKeyConstraint baseTableName="playlists" baseColumnNames="user_id" constraintName="playlists_user_id_fkey"
+                                 referencedTableName="users" referencedColumnNames="id" onDelete="CASCADE"/>
+    </changeSet>
+</databaseChangeLog>
