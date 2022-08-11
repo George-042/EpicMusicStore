@@ -14,8 +14,7 @@ import java.util.List;
 public class TrackEntity {
 
     @Id
-    @SequenceGenerator(name = "tracks_sequence", sequenceName = "tracks_sequence")
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "tracks_sequence")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false)
     private Long id;
 

@@ -12,8 +12,7 @@ import java.util.List;
 public class PlaylistEntity {
 
     @Id
-    @SequenceGenerator(name = "playlists_sequence", sequenceName = "playlists_sequence")
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "playlists_sequence")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false)
     private Long id;
 

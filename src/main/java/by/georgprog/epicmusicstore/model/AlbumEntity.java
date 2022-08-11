@@ -12,8 +12,7 @@ import java.util.List;
 public class AlbumEntity {
 
     @Id
-    @SequenceGenerator(name = "albums_sequence", sequenceName = "albums_sequence")
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "albums_sequence")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false)
     private Long id;
 
