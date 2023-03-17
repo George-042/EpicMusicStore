@@ -29,6 +29,9 @@ public class UserEntity {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "activation_code")
+    private String activationCode;
+
     @Column(name = "gender", nullable = false, length = 6)
     @Enumerated(EnumType.STRING)
     private UserGender gender;
