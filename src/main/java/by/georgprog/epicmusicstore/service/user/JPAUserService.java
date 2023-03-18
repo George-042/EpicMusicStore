@@ -9,6 +9,7 @@ import by.georgprog.epicmusicstore.service.mailsender.MailService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class JPAUserService implements UserService {
 
     private final UserRepository userRepository;
