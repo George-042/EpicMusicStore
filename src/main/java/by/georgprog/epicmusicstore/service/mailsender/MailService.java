@@ -6,5 +6,5 @@ import javax.mail.MessagingException;
 
 public interface MailService {
 
-    void sendActivationMessage(UserDto userDto) throws MessagingException;
+    void sendActivationMessage(UserDto userDto, String activationCode) throws MessagingException;
 }

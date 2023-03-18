@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface UserService extends DaoService<UserDto> {
 
-    void createNewUser(UserDto userDto) throws MessagingException,
+    void createNewUser(UserDto userDto, String password) throws MessagingException,
             EmailAlreadyExistsException;
 
     void activateUser(String activationCode);

@@ -12,7 +12,7 @@ import javax.mail.MessagingException;
 @RequestMapping("reg")
 public class AuthController {
 
-    UserService userService;
+    private final UserService userService;
 
     public AuthController(UserService userService) {
         this.userService = userService;
@@ -30,14 +30,14 @@ public class AuthController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createNewUser(@RequestBody UserDto userDto) {
+    public ResponseEntity<String> createNewUser(@RequestBody UserDto userDto, @RequestParam String password) {
         try {
-            userService.createNewUser(userDto);
+            userService.createNewUser(userDto, password);
         } catch (MessagingException e) {
             e.printStackTrace();
-            return ResponseEntity.badRequest().body("Fuck this server");
+            return ResponseEntity.badRequest().body("Msg exception");
         } catch (EmailAlreadyExistsException e) {
-            return ResponseEntity.badRequest().body("Go to create a new fucking email, i dont give a shit");
+            return ResponseEntity.badRequest().body("Email already exists");
         }
         return ResponseEntity.ok("Created");
     }

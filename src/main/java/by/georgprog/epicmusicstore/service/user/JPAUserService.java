@@ -42,8 +42,8 @@ public class JPAUserService implements UserService {
     }
 
     @Override
-    public void delete(UserDto dto) {
-        userRepository.delete(convertDtoToEntity(dto));
+    public void deleteById(UserDto dto) {
+        userRepository.deleteById(convertDtoToEntity(dto).getId());
     }
 
     @Override
@@ -52,26 +52,29 @@ public class JPAUserService implements UserService {
     }
 
     @Override
-    public void createNewUser(UserDto userDto) throws MessagingException,
+    public void createNewUser(UserDto userDto, String password) throws MessagingException,
             EmailAlreadyExistsException {
         if (userRepository.findByEmail(userDto.getEmail().trim()).isPresent()) {
             throw new EmailAlreadyExistsException();
         }
-        userDto.setActivationCode(UUID.randomUUID().toString());
         userDto.setEmail(userDto.getEmail().trim());
-        mailService.sendActivationMessage(userDto);
-        userDto.setRole(UserRole.USER);
-        userDto.setIsConfirmed(false);
-        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        save(userDto);
+        String activationCode = UUID.randomUUID().toString();
+        mailService.sendActivationMessage(userDto, activationCode);
+
+        UserEntity userEntity = convertDtoToEntity(userDto);
+        userEntity.setActivationCode(activationCode);
+        userEntity.setRole(UserRole.USER);
+        userEntity.isConfirmed(false);
+        userEntity.setPassword(passwordEncoder.encode(password));
+        userRepository.save(userEntity);
     }
 
     @Override
     public void activateUser(String activationCode) {
         Optional<UserEntity> optionalUser = userRepository.findByActivationCode(activationCode);
-        if (optionalUser.isPresent()) {
+        if (optionalUser.isPresent() && !optionalUser.get().isConfirmed()) {
             UserEntity userEntity = optionalUser.get();
-            userEntity.setIsConfirmed(true);
+            userEntity.isConfirmed(true);
             userRepository.save(userEntity);
         }
     }

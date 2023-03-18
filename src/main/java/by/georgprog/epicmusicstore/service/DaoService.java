@@ -9,7 +9,7 @@ public interface DaoService<T> {
 
     Optional<T> getById(long id);
 
-    void delete(T dto);
+    void deleteById(T dto);
 
     void save(T dto);
 }

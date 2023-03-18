@@ -25,8 +25,6 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="activation_code" type="varchar"/>
-
             <column name="gender" type="varchar(6)">
                 <constraints nullable="false"/>
             </column>
@@ -45,5 +43,11 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+    </changeSet>
+
+    <changeSet id="add-an-activation-code-column" author="George">
+        <addColumn tableName="users">
+            <column name="activation_code" type="varchar"/>
+        </addColumn>
     </changeSet>
 </databaseChangeLog>

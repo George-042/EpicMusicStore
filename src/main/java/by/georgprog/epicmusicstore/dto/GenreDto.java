@@ -3,20 +3,16 @@ package by.georgprog.epicmusicstore.dto;
 import by.georgprog.epicmusicstore.model.GenreEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
-
-import java.util.List;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class GenreDto {
 
     private Long id;
     private String name;
-    private List<TrackDto> trackList;
-
-    public GenreDto() {
-    }
 
     public GenreDto(GenreEntity genreEntity) {
         BeanUtils.copyProperties(genreEntity, this);

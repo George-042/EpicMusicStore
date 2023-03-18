@@ -5,6 +5,7 @@ import by.georgprog.epicmusicstore.model.PlaylistEntity;
 import by.georgprog.epicmusicstore.model.TrackEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -62,5 +63,6 @@ public class UserEntity {
     private UserRole role;
 
     @Column(name = "is_confirmed", nullable = false)
-    private Boolean isConfirmed = false;
+    @Accessors(fluent = true)
+    private Boolean isConfirmed;
 }

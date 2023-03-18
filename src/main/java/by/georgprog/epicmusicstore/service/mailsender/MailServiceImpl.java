@@ -5,10 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
+import javax.mail.internet.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
@@ -27,11 +24,11 @@ public class MailServiceImpl implements MailService {
     private String emailPassword;
 
     @Override
-    public void sendActivationMessage(UserDto userDto) throws MessagingException {
+    public void sendActivationMessage(UserDto userDto, String activationCode) throws MessagingException {
         String siteName = emailDomainHost.replaceAll("http://", "");
         String subject = String.format("%s activation link!", siteName);
         String message = String.format(MessageTemplates.getActivationMessage(), userDto.getName(), emailDomainHost,
-                userDto.getActivationCode());
+                activationCode);
 
         sendMessage(userDto, subject, message);
     }
@@ -46,7 +43,6 @@ public class MailServiceImpl implements MailService {
 
         Session session = Session.getInstance(props, auth);
         MimeMessage msg = new MimeMessage(session);
-        msg.setFrom(new InternetAddress("EpicMusicStore@service.com"));
         InternetAddress[] toAddresses = {new InternetAddress(userDto.getEmail())};
         msg.setRecipients(Message.RecipientType.TO, toAddresses);
         msg.setSubject(subject, StandardCharsets.UTF_8.toString());
@@ -60,7 +56,7 @@ public class MailServiceImpl implements MailService {
         Transport.send(msg);
     }
 
-    private Properties getMailProperties() {
+    private Properties getMailProperties() throws AddressException {
         Properties properties = new Properties();
         properties.put("mail.smtp.host", emailHost);
         properties.put("mail.smtp.port", emailPort);
@@ -69,6 +65,7 @@ public class MailServiceImpl implements MailService {
         properties.put("mail.smtp.starttls.enable", Boolean.TRUE.toString());
         properties.put("mail.user", emailUsername);
         properties.put("mail.password", emailPassword);
+        properties.put("mail.ems.from-address", new InternetAddress("EpicMusicStore@service.com"));
         return properties;
     }
 }
