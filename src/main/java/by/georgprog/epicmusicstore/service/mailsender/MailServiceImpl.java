@@ -22,6 +22,8 @@ public class MailServiceImpl implements MailService {
     private String emailUsername;
     @Value("${email.server.password}")
     private String emailPassword;
+    @Value("${mail.ems.from-address}")
+    private String msgFromAddress;
 
     @Override
     public void sendActivationMessage(UserDto userDto, String activationCode) throws MessagingException {
@@ -43,6 +45,7 @@ public class MailServiceImpl implements MailService {
 
         Session session = Session.getInstance(props, auth);
         MimeMessage msg = new MimeMessage(session);
+        msg.setFrom(msgFromAddress);
         InternetAddress[] toAddresses = {new InternetAddress(userDto.getEmail())};
         msg.setRecipients(Message.RecipientType.TO, toAddresses);
         msg.setSubject(subject, StandardCharsets.UTF_8.toString());
@@ -65,7 +68,6 @@ public class MailServiceImpl implements MailService {
         properties.put("mail.smtp.starttls.enable", Boolean.TRUE.toString());
         properties.put("mail.user", emailUsername);
         properties.put("mail.password", emailPassword);
-        properties.put("mail.ems.from-address", new InternetAddress("EpicMusicStore@service.com"));
         return properties;
     }
 }
