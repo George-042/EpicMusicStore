@@ -1,4 +1,4 @@
-package by.georgprog.epicmusicstore.exeptions;
+package by.georgprog.epicmusicstore.exeption;
 
 public class EmailAlreadyExistsException extends Exception {
 }

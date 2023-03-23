@@ -1,7 +1,7 @@
 package by.georgprog.epicmusicstore.controllers.client;
 
 import by.georgprog.epicmusicstore.dto.UserDto;
-import by.georgprog.epicmusicstore.exeptions.EmailAlreadyExistsException;
+import by.georgprog.epicmusicstore.exeption.EmailAlreadyExistsException;
 import by.georgprog.epicmusicstore.service.user.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,19 +26,12 @@ public class AuthController {
     @GetMapping("/activate/{code}")
     public ResponseEntity<String> activateUser(@PathVariable("code") String activationCode) {
         userService.activateUser(activationCode);
-        return ResponseEntity.ok("Done");
+        return ResponseEntity.ok("Activated");
     }
 
     @PostMapping
-    public ResponseEntity<String> createNewUser(@RequestBody UserDto userDto, @RequestParam String password) {
-        try {
-            userService.createNewUser(userDto, password);
-        } catch (MessagingException e) {
-            e.printStackTrace();
-            return ResponseEntity.badRequest().body("Msg exception");
-        } catch (EmailAlreadyExistsException e) {
-            return ResponseEntity.badRequest().body("Email already exists");
-        }
+    public ResponseEntity<String> createNewUser(@RequestBody UserDto userDto, @RequestParam String password) throws MessagingException, EmailAlreadyExistsException {
+        userService.createNewUser(userDto, password);
         return ResponseEntity.ok("Created");
     }
 }
