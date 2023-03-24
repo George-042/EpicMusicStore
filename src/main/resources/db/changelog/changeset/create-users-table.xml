@@ -44,4 +44,10 @@
             </column>
         </createTable>
     </changeSet>
+
+    <changeSet id="add-an-activation-code-column" author="George">
+        <addColumn tableName="users">
+            <column name="activation_code" type="varchar"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
