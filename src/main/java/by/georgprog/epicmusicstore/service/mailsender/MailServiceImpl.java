@@ -1,6 +1,7 @@
 package by.georgprog.epicmusicstore.service.mailsender;
 
 import by.georgprog.epicmusicstore.dto.UserDto;
+import by.georgprog.epicmusicstore.exeption.SendingMessageException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,7 @@ public class MailServiceImpl implements MailService {
     private String msgFromAddress;
 
     @Override
-    public void sendActivationMessage(UserDto userDto, String activationCode) throws MessagingException {
+    public void sendActivationMessage(UserDto userDto, String activationCode) throws SendingMessageException {
         String siteName = emailDomainHost.replaceAll("http://", "");
         String subject = String.format("%s activation link!", siteName);
         String message = String.format(MessageTemplates.getActivationMessage(), userDto.getName(), emailDomainHost,
@@ -35,28 +36,33 @@ public class MailServiceImpl implements MailService {
         sendMessage(userDto, subject, message);
     }
 
-    private void sendMessage(UserDto userDto, String subject, String message) throws MessagingException {
-        Properties props = getMailProperties();
-        Authenticator auth = new Authenticator() {
-            public PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(emailUsername, emailPassword);
-            }
-        };
+    private void sendMessage(UserDto userDto, String subject, String message) throws SendingMessageException {
+        try {
+            Properties props = getMailProperties();
+            Authenticator auth = new Authenticator() {
+                public PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(emailUsername, emailPassword);
+                }
+            };
 
-        Session session = Session.getInstance(props, auth);
-        MimeMessage msg = new MimeMessage(session);
-        msg.setFrom(msgFromAddress);
-        InternetAddress[] toAddresses = {new InternetAddress(userDto.getEmail())};
-        msg.setRecipients(Message.RecipientType.TO, toAddresses);
-        msg.setSubject(subject, StandardCharsets.UTF_8.toString());
+            Session session = Session.getInstance(props, auth);
+            MimeMessage msg = new MimeMessage(session);
+            msg.setFrom(msgFromAddress);
+            InternetAddress[] toAddresses = {new InternetAddress(userDto.getEmail())};
+            msg.setRecipients(Message.RecipientType.TO, toAddresses);
+            msg.setSubject(subject, StandardCharsets.UTF_8.toString());
 
-        MimeBodyPart mimeBodyPart = new MimeBodyPart();
-        mimeBodyPart.setContent(message, "text/html; charset=UTF-8");
-        Multipart multipart = new MimeMultipart();
-        multipart.addBodyPart(mimeBodyPart);
-        msg.setContent(multipart);
+            MimeBodyPart mimeBodyPart = new MimeBodyPart();
+            mimeBodyPart.setContent(message, "text/html; charset=UTF-8");
+            Multipart multipart = new MimeMultipart();
+            multipart.addBodyPart(mimeBodyPart);
+            msg.setContent(multipart);
 
-        Transport.send(msg);
+            Transport.send(msg);
+        } catch (MessagingException ex) {
+            ex.printStackTrace();
+            throw new SendingMessageException();
+        }
     }
 
     private Properties getMailProperties() throws AddressException {

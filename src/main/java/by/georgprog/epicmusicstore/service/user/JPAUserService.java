@@ -2,6 +2,7 @@ package by.georgprog.epicmusicstore.service.user;
 
 import by.georgprog.epicmusicstore.dto.UserDto;
 import by.georgprog.epicmusicstore.exeption.EmailAlreadyExistsException;
+import by.georgprog.epicmusicstore.exeption.SendingMessageException;
 import by.georgprog.epicmusicstore.mapper.UserMapper;
 import by.georgprog.epicmusicstore.model.user.UserEntity;
 import by.georgprog.epicmusicstore.model.user.UserRole;
@@ -11,7 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.mail.MessagingException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -51,8 +51,8 @@ public class JPAUserService implements UserService {
     }
 
     @Override
-    public void createNewUser(UserDto userDto, String password) throws MessagingException,
-            EmailAlreadyExistsException {
+    public void createNewUser(UserDto userDto, String password) throws EmailAlreadyExistsException,
+            SendingMessageException {
         if (userRepository.findByEmail(userDto.getEmail().trim()).isPresent()) {
             throw new EmailAlreadyExistsException();
         }
