@@ -3,12 +3,9 @@ package by.georgprog.epicmusicstore.mapper;
 import by.georgprog.epicmusicstore.dto.PlaylistDto;
 import by.georgprog.epicmusicstore.model.PlaylistEntity;
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface PlaylistMapper {
-
-    PlaylistMapper INSTANCE = Mappers.getMapper(PlaylistMapper.class);
 
     PlaylistDto toDto(PlaylistEntity entity);
 

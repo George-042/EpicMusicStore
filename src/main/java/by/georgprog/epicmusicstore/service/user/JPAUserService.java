@@ -23,11 +23,14 @@ public class JPAUserService implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final MailService mailService;
+    private final UserMapper userMapper;
 
-    public JPAUserService(UserRepository userRepository, PasswordEncoder passwordEncoder, MailService mailService) {
+    public JPAUserService(UserRepository userRepository, PasswordEncoder passwordEncoder, MailService mailService,
+                          UserMapper userMapper) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.mailService = mailService;
+        this.userMapper = userMapper;
     }
 
     @Override
@@ -60,7 +63,7 @@ public class JPAUserService implements UserService {
         String activationCode = UUID.randomUUID().toString();
         mailService.sendActivationMessage(userDto, activationCode);
 
-        UserEntity userEntity = UserMapper.INSTANCE.toEntity(userDto);
+        UserEntity userEntity = userMapper.toEntity(userDto);
         userEntity.setActivationCode(activationCode);
         userEntity.setRole(UserRole.USER);
         userEntity.isConfirmed(false);
@@ -81,6 +84,6 @@ public class JPAUserService implements UserService {
     @Override
     public Optional<UserDto> findByEmail(String email) {
         Optional<UserEntity> userEntity = userRepository.findByEmail(email);
-        return userEntity.map(UserMapper.INSTANCE::toDto);
+        return userEntity.map(userMapper::toDto);
     }
 }
