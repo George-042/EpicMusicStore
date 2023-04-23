@@ -1,8 +1,8 @@
-package by.georgprog.epicmusicstore.exeption;
+package by.georgprog.epicmusicstore.exeption.conflict;
 
-import by.georgprog.epicmusicstore.exeption.http.BadRequestException;
+import by.georgprog.epicmusicstore.exeption.http.ConflictException;
 
-public class EmailAlreadyExistsException extends BadRequestException {
+public class EmailAlreadyExistsException extends ConflictException {
 
     private static final String DEFAULT_MESSAGE = "The email address is already registered.";
 
