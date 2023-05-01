@@ -1,7 +1,7 @@
 package by.georgprog.epicmusicstore.service.mailsender;
 
-import by.georgprog.epicmusicstore.dto.UserDto;
-import by.georgprog.epicmusicstore.exeption.SendingMessageException;
+import by.georgprog.epicmusicstore.dto.RegRequestDto;
+import by.georgprog.epicmusicstore.exeption.badrequest.SendingMessageException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -27,16 +27,16 @@ public class MailServiceImpl implements MailService {
     private String msgFromAddress;
 
     @Override
-    public void sendActivationMessage(UserDto userDto, String activationCode) throws SendingMessageException {
+    public void sendActivationMessage(RegRequestDto dto, String activationCode) throws SendingMessageException {
         String siteName = emailDomainHost.replaceAll("http://", "");
         String subject = String.format("%s activation link!", siteName);
-        String message = String.format(MessageTemplates.getActivationMessage(), userDto.getName(), emailDomainHost,
+        String message = String.format(MessageTemplates.getActivationMessage(), dto.getName(), emailDomainHost,
                 activationCode);
 
-        sendMessage(userDto, subject, message);
+        sendMessage(dto, subject, message);
     }
 
-    private void sendMessage(UserDto userDto, String subject, String message) throws SendingMessageException {
+    private void sendMessage(RegRequestDto dto, String subject, String message) throws SendingMessageException {
         try {
             Properties props = getMailProperties();
             Authenticator auth = new Authenticator() {
@@ -48,7 +48,7 @@ public class MailServiceImpl implements MailService {
             Session session = Session.getInstance(props, auth);
             MimeMessage msg = new MimeMessage(session);
             msg.setFrom(msgFromAddress);
-            InternetAddress[] toAddresses = {new InternetAddress(userDto.getEmail())};
+            InternetAddress[] toAddresses = {new InternetAddress(dto.getEmail())};
             msg.setRecipients(Message.RecipientType.TO, toAddresses);
             msg.setSubject(subject, StandardCharsets.UTF_8.toString());
 

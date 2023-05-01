@@ -1,4 +1,4 @@
-package by.georgprog.epicmusicstore.exeption;
+package by.georgprog.epicmusicstore.exeption.badrequest;
 
 import by.georgprog.epicmusicstore.exeption.http.BadRequestException;
 

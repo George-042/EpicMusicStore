@@ -1,9 +1,9 @@
 package by.georgprog.epicmusicstore.service.mailsender;
 
-import by.georgprog.epicmusicstore.dto.UserDto;
-import by.georgprog.epicmusicstore.exeption.SendingMessageException;
+import by.georgprog.epicmusicstore.dto.RegRequestDto;
+import by.georgprog.epicmusicstore.exeption.badrequest.SendingMessageException;
 
 public interface MailService {
 
-    void sendActivationMessage(UserDto userDto, String activationCode) throws SendingMessageException;
+    void sendActivationMessage(RegRequestDto dto, String activationCode) throws SendingMessageException;
 }
