@@ -16,5 +16,5 @@ public class TrackDto {
     private AlbumDto album;
     private Date publicationDate;
     private Integer duration;
-    private Byte[] trackPic;
+    private Byte[] trackImg;
 }
