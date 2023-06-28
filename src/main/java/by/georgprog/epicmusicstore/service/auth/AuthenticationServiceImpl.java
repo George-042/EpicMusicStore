@@ -3,7 +3,6 @@ package by.georgprog.epicmusicstore.service.auth;
 import by.georgprog.epicmusicstore.dto.AuthRequestDto;
 import by.georgprog.epicmusicstore.dto.RegRequestDto;
 import by.georgprog.epicmusicstore.dto.TokenDto;
-import by.georgprog.epicmusicstore.dto.UserDto;
 import by.georgprog.epicmusicstore.exeption.badrequest.SendingMessageException;
 import by.georgprog.epicmusicstore.exeption.conflict.EmailAlreadyExistsException;
 import by.georgprog.epicmusicstore.exeption.conflict.UsernameAlreadyExistsException;
@@ -88,17 +87,5 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             userEntity.isConfirmed(true);
             save(userEntity);
         }
-    }
-
-    @Override
-    public Optional<UserDto> findByEmail(String email) {
-        Optional<UserEntity> userEntity = userRepository.findByEmail(email);
-        return userEntity.map(userMapper::toDto);
-    }
-
-    @Override
-    public Optional<UserDto> findByName(String name) {
-        Optional<UserEntity> userEntity = userRepository.findByName(name);
-        return userEntity.map(userMapper::toDto);
     }
 }

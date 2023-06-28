@@ -8,6 +8,5 @@ public class EpicMusicStoreApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(EpicMusicStoreApplication.class, args);
-
     }
 }

@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("users/{userId}/albums")
+@RequestMapping("users/albums")
 @RequiredArgsConstructor
 public class AlbumController {
 

@@ -4,12 +4,10 @@ import by.georgprog.epicmusicstore.dto.AlbumDto;
 import by.georgprog.epicmusicstore.exeption.forbidden.ObtainingDataException;
 import by.georgprog.epicmusicstore.exeption.unauthorized.AlbumNotFoundException;
 import by.georgprog.epicmusicstore.exeption.unauthorized.UserNotFoundException;
-import by.georgprog.epicmusicstore.model.AlbumEntity;
-import by.georgprog.epicmusicstore.service.DaoService;
 
 import java.util.List;
 
-public interface AlbumService extends DaoService<AlbumEntity> {
+public interface AlbumService {
 
     AlbumDto findOwnerAlbum(Long id) throws AlbumNotFoundException, ObtainingDataException;
 
