@@ -39,9 +39,9 @@ public class AlbumController {
     }
 
     @PutMapping("/{albumId}")
-    public ResponseEntity<String> updateAlbum(@PathVariable Long id, @RequestBody AlbumDto albumDto)
+    public ResponseEntity<String> updateAlbum(@PathVariable Long albumId, @RequestBody AlbumDto albumDto)
             throws AlbumNotFoundException {
-        albumService.updateAlbum(id, albumDto);
+        albumService.updateAlbum(albumId, albumDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
