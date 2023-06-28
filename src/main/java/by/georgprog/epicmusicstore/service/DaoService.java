@@ -7,9 +7,9 @@ public interface DaoService<T> {
 
     List<T> findAll();
 
-    Optional<T> findById(long id);
+    Optional<T> findById(Long id);
 
-    void deleteById(long id);
+    void deleteById(Long id);
 
     void save(T entity);
 }

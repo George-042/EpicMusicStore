@@ -1,6 +1,8 @@
 package by.georgprog.epicmusicstore.service.album;
 
+import by.georgprog.epicmusicstore.config.security.UserDetailsImpl;
 import by.georgprog.epicmusicstore.dto.AlbumDto;
+import by.georgprog.epicmusicstore.exeption.forbidden.ObtainingDataException;
 import by.georgprog.epicmusicstore.exeption.unauthorized.AlbumNotFoundException;
 import by.georgprog.epicmusicstore.exeption.unauthorized.UserNotFoundException;
 import by.georgprog.epicmusicstore.mapper.AlbumMapper;
@@ -8,6 +10,7 @@ import by.georgprog.epicmusicstore.model.AlbumEntity;
 import by.georgprog.epicmusicstore.repo.AlbumRepository;
 import by.georgprog.epicmusicstore.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,12 +30,12 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    public Optional<AlbumEntity> findById(long id) {
+    public Optional<AlbumEntity> findById(Long id) {
         return albumRepository.findById(id);
     }
 
     @Override
-    public void deleteById(long id) {
+    public void deleteById(Long id) {
         albumRepository.deleteById(id);
     }
 
@@ -42,56 +45,57 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    public List<AlbumDto> findAllByOwner(Long musicianId) throws UserNotFoundException {
-        return albumRepository.findAllByOwner(userService.findById(musicianId).orElseThrow(UserNotFoundException::new))
-                .stream().map(albumMapper::toDto).toList();
-    }
-
-    @Override
-    public Optional<AlbumDto> findByIdAndMusicianId(Long id, Long musicianId) throws UserNotFoundException {
-        return albumRepository.findByIdAndOwner(id, userService.findById(musicianId)
-                .orElseThrow(UserNotFoundException::new)).map(albumMapper::toDto);
-    }
-
-    @Override
-    public List<AlbumDto> getUserAlbums(Long musicianId) throws UserNotFoundException {
-        return findAllByOwner(musicianId);
-    }
-
-    @Override
-    public AlbumDto getAlbum(Long musicianId, Long albumId) throws UserNotFoundException, AlbumNotFoundException {
-        return findByIdAndMusicianId(albumId, musicianId).orElseThrow(AlbumNotFoundException::new);
-    }
-
-    @Override
-    public void createAlbum(Long musicianId, AlbumDto albumDto) {
-        AlbumEntity entity = albumMapper.toEntity(albumDto);
-        if (userService.findById(musicianId).isPresent()) {
-            entity.setOwner(userService.findById(musicianId).get());
-            save(entity);
+    public AlbumDto findOwnerAlbum(Long id) throws AlbumNotFoundException, ObtainingDataException {
+        if (findById(id).isEmpty()) {
+            throw new AlbumNotFoundException();
         }
+        UserDetailsImpl principal = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        if (!principal.getId().equals(findById(id).get().getOwner().getId())) {
+            throw new ObtainingDataException("You can not access the album");
+        }
+        return albumMapper.toDto(findById(id).get());
     }
 
     @Override
-    public void updateAlbum(Long musicianId, Long albumId, AlbumDto albumDto) throws UserNotFoundException,
-            AlbumNotFoundException {
-        AlbumEntity entity = findByIdAndMusicianId(albumId, musicianId).map(albumMapper::toEntity)
-                .orElseThrow(AlbumNotFoundException::new);
-        entity.setName(albumDto.getName());
-        entity.setAlbumPic(albumDto.getAlbumImg());
+    public List<AlbumDto> findAllOwnerAlbums() throws UserNotFoundException {
+        UserDetailsImpl principal = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        return albumRepository.findAllByOwner(userService.findById(principal.getId())
+                .orElseThrow(UserNotFoundException::new)).stream().map(albumMapper::toDto).toList();
+    }
+
+    @Override
+    public void createAlbum(AlbumDto albumDto) throws UserNotFoundException {
+        AlbumEntity entity = albumMapper.toEntity(albumDto);
+        entity.setOwner(userService.findById(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal()).getId()).orElseThrow(UserNotFoundException::new));
         save(entity);
     }
 
     @Override
-    public void deleteAlbum(Long musicianId, Long albumId) throws UserNotFoundException, AlbumNotFoundException {
-        findByIdAndMusicianId(albumId, musicianId).orElseThrow(AlbumNotFoundException::new);
-        deleteById(albumId);
+    public void updateAlbum(Long id, AlbumDto albumDto) throws AlbumNotFoundException {
+        if (findById(id).isEmpty()) {
+            throw new AlbumNotFoundException();
+        }
+        save(albumMapper.toEntity(albumDto));
     }
 
     @Override
-    public void uploadImage(Long musicianId, Long albumId, byte[] image) throws AlbumNotFoundException {
-        AlbumEntity entity = findById(albumId).orElseThrow(AlbumNotFoundException::new);
-        entity.setAlbumPic(image);
-        save(entity);
+    public void deleteAlbum(Long id) throws AlbumNotFoundException {
+        if (findById(id).isEmpty()) {
+            throw new AlbumNotFoundException();
+        }
+        deleteById(id);
+    }
+
+    @Override
+    public void uploadImage(Long id, byte[] image) throws AlbumNotFoundException {
+        if (findById(id).isEmpty()) {
+            throw new AlbumNotFoundException();
+        }
+        AlbumEntity albumEntity = findById(id).get();
+        albumEntity.setAlbumPic(image);
+        save(albumEntity);
     }
 }
