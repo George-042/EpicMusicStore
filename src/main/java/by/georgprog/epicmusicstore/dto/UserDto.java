@@ -18,6 +18,6 @@ public class UserDto {
     private String email;
     private UserGender gender;
     private Date dateOfBirth;
-    private Byte[] userPic;
+    private Byte[] userImg;
     private UserRole role;
 }

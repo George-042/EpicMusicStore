@@ -12,5 +12,5 @@ public class AlbumDto {
     private Long id;
     private String name;
     private UserDto owner;
-    private Byte[] albumPic;
+    private byte[] albumImg;
 }

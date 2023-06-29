@@ -10,12 +10,15 @@ import java.util.Collections;
 import java.util.List;
 
 public class UserDetailsImpl implements UserDetails {
+
+    private final Long id;
     private final String email;
     private final String name;
     private final String password;
     private final List<SimpleGrantedAuthority> authorities;
 
     public UserDetailsImpl(UserEntity user) {
+        id = user.getId();
         email = user.getEmail();
         name = user.getName();
         password = user.getPassword();
@@ -59,5 +62,9 @@ public class UserDetailsImpl implements UserDetails {
 
     public String getEmail() {
         return email;
+    }
+
+    public Long getId() {
+        return id;
     }
 }
