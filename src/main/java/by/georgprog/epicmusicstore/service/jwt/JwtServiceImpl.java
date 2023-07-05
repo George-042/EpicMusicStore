@@ -18,8 +18,6 @@ import java.util.function.Function;
 @Service
 public class JwtServiceImpl implements JwtService {
 
-    private ExceptionHandlerExceptionResolver exceptionResolver;
-
     @Override
     public String generateToken(AuthUserRequest dto) {
         return generateToken(new HashMap<>(), dto);

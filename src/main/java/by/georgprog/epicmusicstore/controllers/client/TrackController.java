@@ -1,6 +1,8 @@
 package by.georgprog.epicmusicstore.controllers.client;
 
 import by.georgprog.epicmusicstore.dto.track.CreateUpdateTrackRequest;
+import by.georgprog.epicmusicstore.dto.track.TrackDto;
+import by.georgprog.epicmusicstore.exeption.badrequest.TrackNotFoundException;
 import by.georgprog.epicmusicstore.exeption.badrequest.UserNotFoundException;
 import by.georgprog.epicmusicstore.exeption.forbidden.ObtainingDataException;
 import by.georgprog.epicmusicstore.service.track.TrackService;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("users/tracks")
@@ -18,6 +21,17 @@ import java.io.IOException;
 public class TrackController {
 
     private final TrackService trackService;
+
+    @GetMapping
+    public ResponseEntity<List<TrackDto>> getTracksWithPicture() throws UserNotFoundException {
+        return new ResponseEntity<>(trackService.findAllOwnerTracks(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{trackId}")
+    public ResponseEntity<TrackDto> getTrack(@PathVariable Long trackId) throws UserNotFoundException,
+            TrackNotFoundException, ObtainingDataException {
+        return new ResponseEntity<>(trackService.findOwnerTrack(trackId), HttpStatus.OK);
+    }
 
     @PostMapping
     public ResponseEntity<String> createTrack(@RequestBody CreateUpdateTrackRequest trackDto)
