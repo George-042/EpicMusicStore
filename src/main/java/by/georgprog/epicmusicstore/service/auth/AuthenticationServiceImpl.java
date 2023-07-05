@@ -1,8 +1,8 @@
 package by.georgprog.epicmusicstore.service.auth;
 
-import by.georgprog.epicmusicstore.dto.AuthRequestDto;
-import by.georgprog.epicmusicstore.dto.RegRequestDto;
-import by.georgprog.epicmusicstore.dto.TokenDto;
+import by.georgprog.epicmusicstore.dto.user.AuthUserRequest;
+import by.georgprog.epicmusicstore.dto.user.RegUserRequest;
+import by.georgprog.epicmusicstore.dto.user.TokenDto;
 import by.georgprog.epicmusicstore.exeption.badrequest.SendingMessageException;
 import by.georgprog.epicmusicstore.exeption.conflict.EmailAlreadyExistsException;
 import by.georgprog.epicmusicstore.exeption.conflict.UsernameAlreadyExistsException;
@@ -42,7 +42,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public void createNewUser(RegRequestDto dto) throws EmailAlreadyExistsException,
+    public void createNewUser(RegUserRequest dto) throws EmailAlreadyExistsException,
             SendingMessageException, UsernameAlreadyExistsException {
         if (userRepository.findByEmail(dto.getEmail().trim()).isPresent()) {
             throw new EmailAlreadyExistsException();
@@ -65,7 +65,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public TokenDto authenticateUser(AuthRequestDto dto) throws UsernameOrEmailNotFoundException,
+    public TokenDto authenticateUser(AuthUserRequest dto) throws UsernameOrEmailNotFoundException,
             InvalidPasswordException {
         if (userRepository.findByNameOrEmail(dto.getPrincipal().trim(), dto.getPrincipal().trim()).isEmpty()) {
             throw new UsernameOrEmailNotFoundException();

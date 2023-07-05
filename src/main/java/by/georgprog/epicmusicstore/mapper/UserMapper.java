@@ -1,7 +1,7 @@
 package by.georgprog.epicmusicstore.mapper;
 
-import by.georgprog.epicmusicstore.dto.RegRequestDto;
-import by.georgprog.epicmusicstore.dto.UserDto;
+import by.georgprog.epicmusicstore.dto.user.RegUserRequest;
+import by.georgprog.epicmusicstore.dto.user.UserDto;
 import by.georgprog.epicmusicstore.model.user.UserEntity;
 import org.mapstruct.Mapper;
 
@@ -12,5 +12,5 @@ public interface UserMapper {
 
     UserEntity toEntity(UserDto dto);
 
-    UserEntity toEntity(RegRequestDto dto);
+    UserEntity toEntity(RegUserRequest dto);
 }

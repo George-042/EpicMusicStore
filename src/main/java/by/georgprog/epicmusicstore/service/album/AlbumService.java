@@ -1,9 +1,10 @@
 package by.georgprog.epicmusicstore.service.album;
 
-import by.georgprog.epicmusicstore.dto.AlbumDto;
+import by.georgprog.epicmusicstore.dto.album.AlbumDto;
+import by.georgprog.epicmusicstore.dto.album.CreateUpdateAlbumRequest;
+import by.georgprog.epicmusicstore.exeption.badrequest.AlbumNotFoundException;
+import by.georgprog.epicmusicstore.exeption.badrequest.UserNotFoundException;
 import by.georgprog.epicmusicstore.exeption.forbidden.ObtainingDataException;
-import by.georgprog.epicmusicstore.exeption.unauthorized.AlbumNotFoundException;
-import by.georgprog.epicmusicstore.exeption.unauthorized.UserNotFoundException;
 
 import java.util.List;
 
@@ -13,11 +14,12 @@ public interface AlbumService {
 
     List<AlbumDto> findAllOwnerAlbums() throws UserNotFoundException;
 
-    void createAlbum(AlbumDto albumDto) throws UserNotFoundException;
+    void createAlbum(CreateUpdateAlbumRequest albumDto) throws UserNotFoundException;
 
-    void updateAlbum(Long id, AlbumDto albumDto) throws AlbumNotFoundException;
+    void updateAlbum(Long id, CreateUpdateAlbumRequest albumDto) throws AlbumNotFoundException, UserNotFoundException,
+            ObtainingDataException;
 
-    void deleteAlbum(Long id) throws AlbumNotFoundException;
+    void deleteAlbum(Long id) throws AlbumNotFoundException, ObtainingDataException;
 
-    void uploadImage(Long id, byte[] image) throws AlbumNotFoundException;
+    void uploadImage(Long id, byte[] image) throws AlbumNotFoundException, ObtainingDataException;
 }
