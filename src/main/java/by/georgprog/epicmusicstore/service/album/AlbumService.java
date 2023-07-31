@@ -5,7 +5,9 @@ import by.georgprog.epicmusicstore.dto.album.CreateUpdateAlbumRequest;
 import by.georgprog.epicmusicstore.exeption.badrequest.AlbumNotFoundException;
 import by.georgprog.epicmusicstore.exeption.badrequest.UserNotFoundException;
 import by.georgprog.epicmusicstore.exeption.forbidden.ObtainingDataException;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface AlbumService {
@@ -17,9 +19,9 @@ public interface AlbumService {
     void createAlbum(CreateUpdateAlbumRequest albumDto) throws UserNotFoundException;
 
     void updateAlbum(Long id, CreateUpdateAlbumRequest albumDto) throws AlbumNotFoundException, UserNotFoundException,
-            ObtainingDataException;
+            ObtainingDataException, IOException;
 
     void deleteAlbum(Long id) throws AlbumNotFoundException, ObtainingDataException;
 
-    void uploadImage(Long id, byte[] image) throws AlbumNotFoundException, ObtainingDataException;
+    void uploadImage(Long id, MultipartFile image) throws AlbumNotFoundException, ObtainingDataException, IOException;
 }

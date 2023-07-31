@@ -43,7 +43,7 @@ public class AlbumController {
     @PutMapping("/{albumId}")
     public ResponseEntity<String> updateAlbum(@PathVariable Long albumId,
                                               @RequestBody CreateUpdateAlbumRequest albumDto)
-            throws AlbumNotFoundException, UserNotFoundException, ObtainingDataException {
+            throws AlbumNotFoundException, UserNotFoundException, ObtainingDataException, IOException {
         albumService.updateAlbum(albumId, albumDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -59,7 +59,7 @@ public class AlbumController {
     public ResponseEntity<String> uploadPicture(@PathVariable("albumId") Long id,
                                                 @RequestParam("file") MultipartFile file) throws IOException,
             AlbumNotFoundException, ObtainingDataException {
-        albumService.uploadImage(id, file.getBytes());
+        albumService.uploadImage(id, file);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

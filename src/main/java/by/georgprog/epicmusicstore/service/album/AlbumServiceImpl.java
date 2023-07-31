@@ -13,7 +13,9 @@ import by.georgprog.epicmusicstore.repo.UserRepository;
 import by.georgprog.epicmusicstore.utils.SecurityContextUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -49,15 +51,15 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    public void updateAlbum(Long id, CreateUpdateAlbumRequest albumDto) throws AlbumNotFoundException, ObtainingDataException {
+    public void updateAlbum(Long id, CreateUpdateAlbumRequest albumDto) throws AlbumNotFoundException,
+            ObtainingDataException, IOException {
         AlbumEntity albumEntityFromDb = albumRepository.findById(id).orElseThrow(AlbumNotFoundException::new);
         if (!albumEntityFromDb.getOwner().getId().equals(SecurityContextUtils.getUserFromSecurityContext().getId())) {
             throw new ObtainingDataException("You can not access the album");
         }
-        AlbumEntity newEntity = albumMapper.toEntity(albumDto);
-        newEntity.setId(albumEntityFromDb.getId());
-        newEntity.setOwner(albumEntityFromDb.getOwner());
-        albumRepository.save(newEntity);
+        albumEntityFromDb.setName(albumDto.getName());
+        albumEntityFromDb.setAlbumPic(albumDto.getAlbumImg().getBytes());
+        albumRepository.save(albumEntityFromDb);
     }
 
     @Override
@@ -70,12 +72,13 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    public void uploadImage(Long id, byte[] image) throws AlbumNotFoundException, ObtainingDataException {
+    public void uploadImage(Long id, MultipartFile image) throws AlbumNotFoundException, ObtainingDataException,
+            IOException {
         AlbumEntity albumEntity = albumRepository.findById(id).orElseThrow(AlbumNotFoundException::new);
         if (!albumEntity.getOwner().getId().equals(SecurityContextUtils.getUserFromSecurityContext().getId())) {
             throw new ObtainingDataException("You can not access the album");
         }
-        albumEntity.setAlbumPic(image);
+        albumEntity.setAlbumPic(image.getBytes());
         albumRepository.save(albumEntity);
     }
 }
