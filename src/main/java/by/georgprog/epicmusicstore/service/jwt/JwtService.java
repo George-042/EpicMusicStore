@@ -1,6 +1,6 @@
 package by.georgprog.epicmusicstore.service.jwt;
 
-import by.georgprog.epicmusicstore.dto.AuthRequestDto;
+import by.georgprog.epicmusicstore.dto.user.AuthUserRequest;
 import io.jsonwebtoken.Claims;
 
 import java.util.Map;
@@ -8,9 +8,9 @@ import java.util.function.Function;
 
 public interface JwtService {
 
-    String generateToken(AuthRequestDto authentication);
+    String generateToken(AuthUserRequest authentication);
 
-    String generateToken(Map<String, Object> extraClaims, AuthRequestDto authentication);
+    String generateToken(Map<String, Object> extraClaims, AuthUserRequest authentication);
 
     boolean isTokenValid(String token);
 

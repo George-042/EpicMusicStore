@@ -1,6 +1,6 @@
 package by.georgprog.epicmusicstore.service.mailsender;
 
-import by.georgprog.epicmusicstore.dto.RegRequestDto;
+import by.georgprog.epicmusicstore.dto.user.RegUserRequest;
 import by.georgprog.epicmusicstore.exeption.badrequest.SendingMessageException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ public class MailServiceImpl implements MailService {
     private String msgFromAddress;
 
     @Override
-    public void sendActivationMessage(RegRequestDto dto, String activationCode) throws SendingMessageException {
+    public void sendActivationMessage(RegUserRequest dto, String activationCode) throws SendingMessageException {
         String siteName = emailDomainHost.replaceAll("http://", "");
         String subject = String.format("%s activation link!", siteName);
         String message = String.format(MessageTemplates.getActivationMessage(), dto.getName(), emailDomainHost,
@@ -36,7 +36,7 @@ public class MailServiceImpl implements MailService {
         sendMessage(dto, subject, message);
     }
 
-    private void sendMessage(RegRequestDto dto, String subject, String message) throws SendingMessageException {
+    private void sendMessage(RegUserRequest dto, String subject, String message) throws SendingMessageException {
         try {
             Properties props = getMailProperties();
             Authenticator auth = new Authenticator() {

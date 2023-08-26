@@ -1,4 +1,4 @@
-package by.georgprog.epicmusicstore.dto;
+package by.georgprog.epicmusicstore.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

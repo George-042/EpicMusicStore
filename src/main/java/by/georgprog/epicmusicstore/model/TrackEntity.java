@@ -47,10 +47,10 @@ public class TrackEntity {
     private Integer duration;
 
     @Column(name = "track_picture", columnDefinition = "BYTEA")
-    private Byte[] trackPic;
+    private byte[] trackPic;
 
     @Column(name = "file", nullable = false, columnDefinition = "BYTEA")
     @Basic(fetch = FetchType.LAZY)
-    private Byte[] file;
+    private byte[] file;
 
 }

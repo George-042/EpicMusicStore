@@ -1,8 +1,8 @@
-package by.georgprog.epicmusicstore.exeption.unauthorized;
+package by.georgprog.epicmusicstore.exeption.badrequest;
 
-import by.georgprog.epicmusicstore.exeption.http.UnauthorizedException;
+import by.georgprog.epicmusicstore.exeption.http.BadRequestException;
 
-public class AlbumNotFoundException extends UnauthorizedException {
+public class AlbumNotFoundException extends BadRequestException {
 
     private static final String DEFAULT_MESSAGE = "Album not found";
 

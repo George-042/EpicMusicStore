@@ -1,10 +1,10 @@
 package by.georgprog.epicmusicstore.service.album;
 
-import by.georgprog.epicmusicstore.config.security.UserDetailsImpl;
-import by.georgprog.epicmusicstore.dto.AlbumDto;
+import by.georgprog.epicmusicstore.dto.album.AlbumDto;
+import by.georgprog.epicmusicstore.dto.album.CreateUpdateAlbumRequest;
+import by.georgprog.epicmusicstore.exeption.badrequest.AlbumNotFoundException;
+import by.georgprog.epicmusicstore.exeption.badrequest.UserNotFoundException;
 import by.georgprog.epicmusicstore.exeption.forbidden.ObtainingDataException;
-import by.georgprog.epicmusicstore.exeption.unauthorized.AlbumNotFoundException;
-import by.georgprog.epicmusicstore.exeption.unauthorized.UserNotFoundException;
 import by.georgprog.epicmusicstore.mapper.AlbumMapper;
 import by.georgprog.epicmusicstore.model.AlbumEntity;
 import by.georgprog.epicmusicstore.model.user.UserEntity;
@@ -13,9 +13,10 @@ import by.georgprog.epicmusicstore.repo.UserRepository;
 import by.georgprog.epicmusicstore.utils.SecurityContextUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,15 +28,11 @@ public class AlbumServiceImpl implements AlbumService {
 
     @Override
     public AlbumDto findOwnerAlbum(Long id) throws AlbumNotFoundException, ObtainingDataException {
-        Optional<AlbumEntity> albumEntity = albumRepository.findById(id);
-        if (albumEntity.isEmpty()) {
-            throw new AlbumNotFoundException();
-        }
-        UserDetailsImpl principal = SecurityContextUtils.getUserFromSecurityContext();
-        if (!principal.getId().equals(albumEntity.get().getOwner().getId())) {
+        AlbumEntity albumEntity = albumRepository.findById(id).orElseThrow(AlbumNotFoundException::new);
+        if (!SecurityContextUtils.getUserFromSecurityContext().getId().equals(albumEntity.getOwner().getId())) {
             throw new ObtainingDataException("You can not access the album");
         }
-        return albumMapper.toDto(albumEntity.get());
+        return albumMapper.toDto(albumEntity);
     }
 
     @Override
@@ -46,7 +43,7 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    public void createAlbum(AlbumDto albumDto) throws UserNotFoundException {
+    public void createAlbum(CreateUpdateAlbumRequest albumDto) throws UserNotFoundException {
         AlbumEntity entity = albumMapper.toEntity(albumDto);
         entity.setOwner(userRepository.findById(SecurityContextUtils.getUserFromSecurityContext().getId())
                 .orElseThrow(UserNotFoundException::new));
@@ -54,30 +51,34 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    public void updateAlbum(Long id, AlbumDto albumDto) throws AlbumNotFoundException {
-        if (albumRepository.findById(id).isEmpty()) {
-            throw new AlbumNotFoundException();
+    public void updateAlbum(Long id, CreateUpdateAlbumRequest albumDto) throws AlbumNotFoundException,
+            ObtainingDataException, IOException {
+        AlbumEntity albumEntityFromDb = albumRepository.findById(id).orElseThrow(AlbumNotFoundException::new);
+        if (!albumEntityFromDb.getOwner().getId().equals(SecurityContextUtils.getUserFromSecurityContext().getId())) {
+            throw new ObtainingDataException("You can not access the album");
         }
-        albumDto.setId(id);
-        albumRepository.save(albumMapper.toEntity(albumDto));
+        albumEntityFromDb.setName(albumDto.getName());
+        albumEntityFromDb.setAlbumPic(albumDto.getAlbumImg().getBytes());
+        albumRepository.save(albumEntityFromDb);
     }
 
     @Override
-    public void deleteAlbum(Long id) throws AlbumNotFoundException {
-        if (albumRepository.findById(id).isEmpty()) {
-            throw new AlbumNotFoundException();
+    public void deleteAlbum(Long id) throws AlbumNotFoundException, ObtainingDataException {
+        AlbumEntity albumEntity = albumRepository.findById(id).orElseThrow(AlbumNotFoundException::new);
+        if (!albumEntity.getOwner().getId().equals(SecurityContextUtils.getUserFromSecurityContext().getId())) {
+            throw new ObtainingDataException("You can not access the album");
         }
         albumRepository.deleteById(id);
     }
 
     @Override
-    public void uploadImage(Long id, byte[] image) throws AlbumNotFoundException {
-        Optional<AlbumEntity> albumEntityOptional = albumRepository.findById(id);
-        if (albumEntityOptional.isEmpty()) {
-            throw new AlbumNotFoundException();
+    public void uploadImage(Long id, MultipartFile image) throws AlbumNotFoundException, ObtainingDataException,
+            IOException {
+        AlbumEntity albumEntity = albumRepository.findById(id).orElseThrow(AlbumNotFoundException::new);
+        if (!albumEntity.getOwner().getId().equals(SecurityContextUtils.getUserFromSecurityContext().getId())) {
+            throw new ObtainingDataException("You can not access the album");
         }
-        AlbumEntity albumEntity = albumEntityOptional.get();
-        albumEntity.setAlbumPic(image);
+        albumEntity.setAlbumPic(image.getBytes());
         albumRepository.save(albumEntity);
     }
 }

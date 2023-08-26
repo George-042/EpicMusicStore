@@ -1,5 +1,6 @@
-package by.georgprog.epicmusicstore.dto;
+package by.georgprog.epicmusicstore.dto.track;
 
+import by.georgprog.epicmusicstore.dto.album.AlbumDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,5 +17,6 @@ public class TrackDto {
     private AlbumDto album;
     private Date publicationDate;
     private Integer duration;
-    private Byte[] trackImg;
+    private byte[] trackImg;
+    private byte[] file;
 }

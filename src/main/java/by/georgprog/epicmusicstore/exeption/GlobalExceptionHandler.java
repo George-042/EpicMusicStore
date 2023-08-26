@@ -1,6 +1,6 @@
 package by.georgprog.epicmusicstore.exeption;
 
-import by.georgprog.epicmusicstore.dto.ErrorDto;
+import by.georgprog.epicmusicstore.dto.error.ErrorDto;
 import by.georgprog.epicmusicstore.exeption.http.BadRequestException;
 import by.georgprog.epicmusicstore.exeption.http.ConflictException;
 import by.georgprog.epicmusicstore.exeption.http.UnauthorizedException;

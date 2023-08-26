@@ -1,8 +1,8 @@
-package by.georgprog.epicmusicstore.exeption.unauthorized;
+package by.georgprog.epicmusicstore.exeption.badrequest;
 
-import by.georgprog.epicmusicstore.exeption.http.UnauthorizedException;
+import by.georgprog.epicmusicstore.exeption.http.BadRequestException;
 
-public class UserNotFoundException extends UnauthorizedException {
+public class UserNotFoundException extends BadRequestException {
 
     private static final String DEFAULT_MESSAGE = "User not found";
 

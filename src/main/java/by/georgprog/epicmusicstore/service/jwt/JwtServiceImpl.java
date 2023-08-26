@@ -1,6 +1,6 @@
 package by.georgprog.epicmusicstore.service.jwt;
 
-import by.georgprog.epicmusicstore.dto.AuthRequestDto;
+import by.georgprog.epicmusicstore.dto.user.AuthUserRequest;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -18,15 +18,13 @@ import java.util.function.Function;
 @Service
 public class JwtServiceImpl implements JwtService {
 
-    private ExceptionHandlerExceptionResolver exceptionResolver;
-
     @Override
-    public String generateToken(AuthRequestDto dto) {
+    public String generateToken(AuthUserRequest dto) {
         return generateToken(new HashMap<>(), dto);
     }
 
     @Override
-    public String generateToken(Map<String, Object> extraClaims, AuthRequestDto dto) {
+    public String generateToken(Map<String, Object> extraClaims, AuthUserRequest dto) {
         return Jwts.builder()
                 .setHeader(JwtProperties.getHeaderParameters())
                 .setClaims(extraClaims)

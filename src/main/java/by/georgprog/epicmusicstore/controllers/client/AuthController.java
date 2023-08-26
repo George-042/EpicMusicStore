@@ -1,8 +1,8 @@
 package by.georgprog.epicmusicstore.controllers.client;
 
-import by.georgprog.epicmusicstore.dto.AuthRequestDto;
-import by.georgprog.epicmusicstore.dto.RegRequestDto;
-import by.georgprog.epicmusicstore.dto.TokenDto;
+import by.georgprog.epicmusicstore.dto.user.AuthUserRequest;
+import by.georgprog.epicmusicstore.dto.user.RegUserRequest;
+import by.georgprog.epicmusicstore.dto.user.TokenDto;
 import by.georgprog.epicmusicstore.exeption.badrequest.SendingMessageException;
 import by.georgprog.epicmusicstore.exeption.conflict.EmailAlreadyExistsException;
 import by.georgprog.epicmusicstore.exeption.conflict.UsernameAlreadyExistsException;
@@ -33,14 +33,14 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegRequestDto dto) throws
+    public ResponseEntity<String> register(@RequestBody RegUserRequest dto) throws
             EmailAlreadyExistsException, SendingMessageException, UsernameAlreadyExistsException {
         authenticationService.createNewUser(dto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<TokenDto> authenticate(@RequestBody AuthRequestDto dto) throws InvalidPasswordException,
+    public ResponseEntity<TokenDto> authenticate(@RequestBody AuthUserRequest dto) throws InvalidPasswordException,
             UsernameOrEmailNotFoundException {
         return new ResponseEntity<>(authenticationService.authenticateUser(dto), HttpStatus.OK);
     }

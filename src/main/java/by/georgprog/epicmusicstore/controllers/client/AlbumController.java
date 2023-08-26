@@ -1,9 +1,10 @@
 package by.georgprog.epicmusicstore.controllers.client;
 
-import by.georgprog.epicmusicstore.dto.AlbumDto;
+import by.georgprog.epicmusicstore.dto.album.AlbumDto;
+import by.georgprog.epicmusicstore.dto.album.CreateUpdateAlbumRequest;
+import by.georgprog.epicmusicstore.exeption.badrequest.AlbumNotFoundException;
+import by.georgprog.epicmusicstore.exeption.badrequest.UserNotFoundException;
 import by.georgprog.epicmusicstore.exeption.forbidden.ObtainingDataException;
-import by.georgprog.epicmusicstore.exeption.unauthorized.AlbumNotFoundException;
-import by.georgprog.epicmusicstore.exeption.unauthorized.UserNotFoundException;
 import by.georgprog.epicmusicstore.service.album.AlbumService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -33,21 +34,23 @@ public class AlbumController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createAlbum(@RequestBody AlbumDto albumDto) throws UserNotFoundException {
+    public ResponseEntity<String> createAlbum(@RequestBody CreateUpdateAlbumRequest albumDto)
+            throws UserNotFoundException {
         albumService.createAlbum(albumDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/{albumId}")
-    public ResponseEntity<String> updateAlbum(@PathVariable Long albumId, @RequestBody AlbumDto albumDto)
-            throws AlbumNotFoundException {
+    public ResponseEntity<String> updateAlbum(@PathVariable Long albumId,
+                                              @RequestBody CreateUpdateAlbumRequest albumDto)
+            throws AlbumNotFoundException, UserNotFoundException, ObtainingDataException, IOException {
         albumService.updateAlbum(albumId, albumDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{albumId}")
-    public ResponseEntity<String> deleteAlbum(@PathVariable Long albumId)
-            throws AlbumNotFoundException {
+    public ResponseEntity<String> deleteAlbum(@PathVariable Long albumId) throws AlbumNotFoundException,
+            ObtainingDataException {
         albumService.deleteAlbum(albumId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -55,8 +58,8 @@ public class AlbumController {
     @PostMapping("/{albumId}/picture")
     public ResponseEntity<String> uploadPicture(@PathVariable("albumId") Long id,
                                                 @RequestParam("file") MultipartFile file) throws IOException,
-            AlbumNotFoundException {
-        albumService.uploadImage(id, file.getBytes());
+            AlbumNotFoundException, ObtainingDataException {
+        albumService.uploadImage(id, file);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
