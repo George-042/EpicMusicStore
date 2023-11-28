@@ -18,4 +18,8 @@
             </column>
         </createTable>
     </changeSet>
+
+    <changeSet id="add-unique-constraint-to-name-column" author="George">
+        <addUniqueConstraint tableName="genres" columnNames="name"/>
+    </changeSet>
 </databaseChangeLog>

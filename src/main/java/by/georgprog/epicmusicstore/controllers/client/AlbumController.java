@@ -34,17 +34,19 @@ public class AlbumController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createAlbum(@RequestBody CreateUpdateAlbumRequest albumDto)
-            throws UserNotFoundException {
-        albumService.createAlbum(albumDto);
+    public ResponseEntity<String> createAlbum(@ModelAttribute CreateUpdateAlbumRequest albumDto,
+                                              @RequestPart(value = "albumImg", required = false) MultipartFile albumImg)
+            throws UserNotFoundException, IOException {
+        albumService.createAlbum(albumDto, albumImg);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/{albumId}")
     public ResponseEntity<String> updateAlbum(@PathVariable Long albumId,
-                                              @RequestBody CreateUpdateAlbumRequest albumDto)
+                                              @ModelAttribute CreateUpdateAlbumRequest albumDto,
+                                              @RequestPart(value = "albumImg", required = false) MultipartFile albumImg)
             throws AlbumNotFoundException, UserNotFoundException, ObtainingDataException, IOException {
-        albumService.updateAlbum(albumId, albumDto);
+        albumService.updateAlbum(albumId, albumDto, albumImg);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -55,11 +57,11 @@ public class AlbumController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/{albumId}/picture")
-    public ResponseEntity<String> uploadPicture(@PathVariable("albumId") Long id,
-                                                @RequestParam("file") MultipartFile file) throws IOException,
+    @PatchMapping("/{albumId}/picture")
+    public ResponseEntity<String> uploadPicture(@PathVariable("albumId") Long albumId,
+                                                @RequestParam("albumImg") MultipartFile albumImg) throws IOException,
             AlbumNotFoundException, ObtainingDataException {
-        albumService.uploadImage(id, file);
+        albumService.uploadImage(albumId, albumImg);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

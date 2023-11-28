@@ -3,6 +3,7 @@ package by.georgprog.epicmusicstore.exeption;
 import by.georgprog.epicmusicstore.dto.error.ErrorDto;
 import by.georgprog.epicmusicstore.exeption.http.BadRequestException;
 import by.georgprog.epicmusicstore.exeption.http.ConflictException;
+import by.georgprog.epicmusicstore.exeption.http.ForbiddenException;
 import by.georgprog.epicmusicstore.exeption.http.UnauthorizedException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -25,6 +26,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<ErrorDto> handleUsernameNotFoundException(UnauthorizedException ex) {
+        ErrorDto errorDto = new ErrorDto(ex.getMessage());
+        return new ResponseEntity<>(errorDto, ex.getHttpStatus());
+    }
+
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<ErrorDto> handleHttpException(ForbiddenException ex) {
         ErrorDto errorDto = new ErrorDto(ex.getMessage());
         return new ResponseEntity<>(errorDto, ex.getHttpStatus());
     }

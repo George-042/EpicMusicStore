@@ -26,7 +26,6 @@ public class AlbumEntity {
     @JoinColumn(name = "musician_id", nullable = false, updatable = false)
     private UserEntity owner;
 
-    @Lob
     @Column(name = "album_picture", columnDefinition = "BYTEA")
     private byte[] albumPic;
 }

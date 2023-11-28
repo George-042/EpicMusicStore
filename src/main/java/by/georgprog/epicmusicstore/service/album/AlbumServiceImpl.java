@@ -43,22 +43,27 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    public void createAlbum(CreateUpdateAlbumRequest albumDto) throws UserNotFoundException {
-        AlbumEntity entity = albumMapper.toEntity(albumDto);
+    public void createAlbum(CreateUpdateAlbumRequest albumDto, MultipartFile albumImg) throws UserNotFoundException,
+            IOException {
+        AlbumEntity entity = new AlbumEntity();
+        entity.setName(albumDto.getName());
+        if (albumImg != null) {
+            entity.setAlbumPic(albumImg.getBytes());
+        }
         entity.setOwner(userRepository.findById(SecurityContextUtils.getUserFromSecurityContext().getId())
                 .orElseThrow(UserNotFoundException::new));
         albumRepository.save(entity);
     }
 
     @Override
-    public void updateAlbum(Long id, CreateUpdateAlbumRequest albumDto) throws AlbumNotFoundException,
+    public void updateAlbum(Long id, CreateUpdateAlbumRequest albumDto, MultipartFile albumImg) throws AlbumNotFoundException,
             ObtainingDataException, IOException {
         AlbumEntity albumEntityFromDb = albumRepository.findById(id).orElseThrow(AlbumNotFoundException::new);
         if (!albumEntityFromDb.getOwner().getId().equals(SecurityContextUtils.getUserFromSecurityContext().getId())) {
             throw new ObtainingDataException("You can not access the album");
         }
         albumEntityFromDb.setName(albumDto.getName());
-        albumEntityFromDb.setAlbumPic(albumDto.getAlbumImg().getBytes());
+        albumEntityFromDb.setAlbumPic(albumImg.getBytes());
         albumRepository.save(albumEntityFromDb);
     }
 
@@ -72,13 +77,13 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    public void uploadImage(Long id, MultipartFile image) throws AlbumNotFoundException, ObtainingDataException,
+    public void uploadImage(Long id, MultipartFile albumImg) throws AlbumNotFoundException, ObtainingDataException,
             IOException {
         AlbumEntity albumEntity = albumRepository.findById(id).orElseThrow(AlbumNotFoundException::new);
         if (!albumEntity.getOwner().getId().equals(SecurityContextUtils.getUserFromSecurityContext().getId())) {
             throw new ObtainingDataException("You can not access the album");
         }
-        albumEntity.setAlbumPic(image.getBytes());
+        albumEntity.setAlbumPic(albumImg.getBytes());
         albumRepository.save(albumEntity);
     }
 }
