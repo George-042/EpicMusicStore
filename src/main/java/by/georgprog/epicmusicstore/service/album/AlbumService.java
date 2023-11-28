@@ -16,12 +16,12 @@ public interface AlbumService {
 
     List<AlbumDto> findAllOwnerAlbums() throws UserNotFoundException;
 
-    void createAlbum(CreateUpdateAlbumRequest albumDto) throws UserNotFoundException;
+    void createAlbum(CreateUpdateAlbumRequest albumDto, MultipartFile albumImg) throws UserNotFoundException, IOException;
 
-    void updateAlbum(Long id, CreateUpdateAlbumRequest albumDto) throws AlbumNotFoundException, UserNotFoundException,
+    void updateAlbum(Long id, CreateUpdateAlbumRequest albumDto, MultipartFile albumImg) throws AlbumNotFoundException, UserNotFoundException,
             ObtainingDataException, IOException;
 
     void deleteAlbum(Long id) throws AlbumNotFoundException, ObtainingDataException;
 
-    void uploadImage(Long id, MultipartFile image) throws AlbumNotFoundException, ObtainingDataException, IOException;
+    void uploadImage(Long id, MultipartFile albumImg) throws AlbumNotFoundException, ObtainingDataException, IOException;
 }

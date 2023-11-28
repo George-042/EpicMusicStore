@@ -17,5 +17,5 @@ public class CreateUpdateTrackRequest {
     private List<Long> authorsId;
     private List<Long> listGenreId;
     private MultipartFile trackImg;
-    private MultipartFile file;
+    private MultipartFile mFile;
 }

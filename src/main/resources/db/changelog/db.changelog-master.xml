@@ -15,4 +15,5 @@
     <include file="/changeset/create-playlist_tracks-table.xml" relativeToChangelogFile="true"/>
     <include file="/changeset/create-track_genre-table.xml" relativeToChangelogFile="true"/>
     <include file="/changeset/create-musician_track_list-table.xml" relativeToChangelogFile="true"/>
+    <include file="/changeset/insert-genres-into-genres-table.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>
