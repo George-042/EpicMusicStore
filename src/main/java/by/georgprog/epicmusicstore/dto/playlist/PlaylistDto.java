@@ -13,5 +13,5 @@ public class PlaylistDto {
     private Long id;
     private String name;
     private UserDto owner;
-    private Byte[] playlistImg;
+    private byte[] playlistImg;
 }

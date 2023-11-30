@@ -21,8 +21,13 @@ public class TrackEntity {
     @Column(name = "name", nullable = false, length = 100)
     private String name;
 
-    @ManyToMany(mappedBy = "trackList", fetch = FetchType.LAZY)
-    private List<UserEntity> author;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "user_track_list",
+            joinColumns = @JoinColumn(name = "track_id", nullable = false, updatable = false),
+            inverseJoinColumns = @JoinColumn(name = "user_id", nullable = false, updatable = false)
+    )
+    private List<UserEntity> authors;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -30,13 +35,13 @@ public class TrackEntity {
             joinColumns = @JoinColumn(name = "track_id", nullable = false, updatable = false),
             inverseJoinColumns = @JoinColumn(name = "genre_id", nullable = false, updatable = false)
     )
-    private List<GenreEntity> genre;
+    private List<GenreEntity> genres;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "album_id", nullable = false, updatable = false)
     private AlbumEntity album;
 
-    @ManyToMany(mappedBy = "trackList", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "tracks", fetch = FetchType.LAZY)
     private List<PlaylistEntity> inPlaylists;
 
     @Column(name = "publication_date", nullable = false, columnDefinition = "TIMESTAMP")

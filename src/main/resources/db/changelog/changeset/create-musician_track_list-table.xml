@@ -26,4 +26,26 @@
                                  constraintName="musician_track_list_track_id_fkey"
                                  referencedTableName="tracks" referencedColumnNames="id"/>
     </changeSet>
+
+    <changeSet id="drop-all-foreign-key-constraints-in-musician-track-list" author="George">
+        <dropAllForeignKeyConstraints baseTableName="musician_track_list"/>
+    </changeSet>
+
+    <changeSet id="rename-musician-track-list-table-to-user-track-list" author="George">
+        <renameTable oldTableName="musician_track_list" newTableName="user_track_list"/>
+    </changeSet>
+
+    <changeSet id="rename-musician-id-column-to-user-id" author="George">
+        <renameColumn tableName="user_track_list" oldColumnName="musician_id" newColumnName="user_id"/>
+    </changeSet>
+
+    <changeSet id="create-new-foreign-key-constrains-in-user-track-list" author="George">
+        <addForeignKeyConstraint baseTableName="user_track_list" baseColumnNames="user_id"
+                                 constraintName="user_track_list_user_id_fkey"
+                                 referencedTableName="users" referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="user_track_list" baseColumnNames="track_id"
+                                 constraintName="user_track_list_track_id_fkey"
+                                 referencedTableName="tracks" referencedColumnNames="id"/>
+    </changeSet>
 </databaseChangeLog>

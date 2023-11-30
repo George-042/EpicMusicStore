@@ -18,6 +18,6 @@ public class GenreEntity {
     @Column(name = "name", nullable = false, unique = true, length = 100)
     private String name;
 
-    @ManyToMany(mappedBy = "genre", fetch = FetchType.LAZY)
-    private List<TrackEntity> trackList;
+    @ManyToMany(mappedBy = "genres", fetch = FetchType.LAZY)
+    private List<TrackEntity> tracks;
 }

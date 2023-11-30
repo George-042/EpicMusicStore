@@ -1,4 +1,4 @@
-package by.georgprog.epicmusicstore.dto.track;
+package by.georgprog.epicmusicstore.dto.playlist;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,10 +9,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateUpdateTrackRequest {
-
+public class CreateUpdatePlaylistRequest {
     private String name;
-    private Long albumId;
-    private List<Long> authorsId;
-    private List<Long> genresId;
+    private List<Long> tracks;
 }

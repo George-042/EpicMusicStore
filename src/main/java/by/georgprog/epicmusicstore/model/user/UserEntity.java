@@ -47,13 +47,8 @@ public class UserEntity {
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
     private List<AlbumEntity> albums;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "musician_track_list",
-            joinColumns = @JoinColumn(name = "musician_id", nullable = false, updatable = false),
-            inverseJoinColumns = @JoinColumn(name = "track_id", nullable = false, updatable = false)
-    )
-    private List<TrackEntity> trackList;
+    @ManyToMany(mappedBy = "authors", fetch = FetchType.LAZY)
+    private List<TrackEntity> tracks;
 
     @Column(name = "user_picture", columnDefinition = "BYTEA")
     private Byte[] userPic;
