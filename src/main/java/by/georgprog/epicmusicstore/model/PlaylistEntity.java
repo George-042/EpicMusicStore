@@ -25,12 +25,12 @@ public class PlaylistEntity {
             joinColumns = @JoinColumn(name = "playlist_id", nullable = false, updatable = false),
             inverseJoinColumns = @JoinColumn(name = "track_id", nullable = false, updatable = false)
     )
-    private List<TrackEntity> trackList;
+    private List<TrackEntity> tracks;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", nullable = false, updatable = false)
     private UserEntity owner;
 
     @Column(name = "playlist_picture", columnDefinition = "BYTEA")
-    private Byte[] playlistPic;
+    private byte[] playlistPic;
 }

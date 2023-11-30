@@ -12,6 +12,6 @@ import java.util.List;
 @Repository("TrackRepo")
 public interface TrackRepository extends JpaRepository<TrackEntity, Long> {
 
-    @Query("SELECT t FROM TrackEntity t WHERE :authors MEMBER OF t.author")
+    @Query("SELECT t FROM TrackEntity t WHERE :authors MEMBER OF t.authors")
     List<TrackEntity> findAllTracksByAuthor(@Param("authors") List<UserEntity> authors);
 }
